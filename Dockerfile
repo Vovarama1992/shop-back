@@ -11,10 +11,7 @@ RUN npm install --unsafe-perm --allow-root
 
 COPY . .
 
-RUN rm -rf node_modules/.prisma \
-           node_modules/@prisma \
-           node_modules/prisma
-           dist
+RUN rm -rf node_modules/.prisma node_modules/@prisma node_modules/prisma dist
 
 RUN npm install prisma --save-dev
 
