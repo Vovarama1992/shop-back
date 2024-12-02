@@ -7,7 +7,7 @@ import { RequestCodeDto } from './dto/request-code.dto';
 import { RequestAdminCodeDto } from './dto/request-admin-code.dto';
 import { LoginDto } from './dto/auth.dto';
 import { RedisService } from '../redis/redis.service'; // импортируем RedisService
-import { SmsService } from 'src/sms/sms.service';
+import { SmsService } from '../sms/sms.service';
 import { Role } from '@prisma/client';
 //import * as bcrypt from 'bcryptjs';
 
