@@ -99,10 +99,13 @@ export class AuthService {
   }
 
   async requestAdminCode(requestAdminCodeDto: RequestAdminCodeDto) {
-    const { phone, password } = requestAdminCodeDto;
+    const { phone, email, password } = requestAdminCodeDto;
 
-    const user = await this.prisma.user.findUnique({
-      where: { phone },
+    const user = await this.prisma.user.findFirst({
+      where: {
+        phone,
+        email,
+      },
     });
 
     if (!user) {
