@@ -7,5 +7,9 @@ export class RequestAdminCodeDto {
 
   @IsString()
   @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
   password: string;
 }

@@ -8,7 +8,7 @@ export class SmsService {
   constructor() {}
 
   async sendSms(phone: string, text: string): Promise<void> {
-    const apiKey = 'yR062691440655cb0b0793bfa8f7189dc205c7fdf5d896ae';
+    const apiKey = process.env.REPLACEMENT;
     const senderName = 'MyBrandName';
 
     const url = `${this.apiUrl}?method=push_msg&key=${apiKey}&text=${encodeURIComponent(
