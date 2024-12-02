@@ -9,12 +9,14 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { PrismaModule } from '../prisma/prisma.module';
 import { RedisModule } from '../redis/redis.module';
+import { SmsModule } from 'src/sms/sms.module';
 
 @Module({
   imports: [
     UsersModule,
     PrismaModule,
     RedisModule,
+    SmsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
