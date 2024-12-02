@@ -7,12 +7,12 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { PrismaModule } from '../prisma/prisma.module'; // Импортируем PrismaModule
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
     UsersModule,
-    PrismaModule, // Импортируем PrismaModule
+    PrismaModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
