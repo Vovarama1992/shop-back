@@ -9,7 +9,7 @@ import { LoginDto } from './dto/auth.dto';
 import { RedisService } from '../redis/redis.service'; // импортируем RedisService
 import { SmsService } from 'src/sms/sms.service';
 import { Role } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+//import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -116,8 +116,7 @@ export class AuthService {
       throw new HttpException('User is not an admin', HttpStatus.FORBIDDEN);
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    if (password !== user.password) {
       throw new HttpException('Invalid password', HttpStatus.FORBIDDEN);
     }
 
