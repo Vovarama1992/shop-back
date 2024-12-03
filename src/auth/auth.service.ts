@@ -99,11 +99,10 @@ export class AuthService {
   }
 
   async requestAdminCode(requestAdminCodeDto: RequestAdminCodeDto) {
-    const { phone, email, password } = requestAdminCodeDto;
+    const { email, password } = requestAdminCodeDto;
 
     const user = await this.prisma.user.findFirst({
       where: {
-        phone,
         email,
       },
     });
@@ -123,6 +122,8 @@ export class AuthService {
     const code = Math.floor(10000 + Math.random() * 90000).toString();
 
     await this.redisService.setCode(user.id, code);
+
+    const phone = user.phone;
 
     await this.smsService.sendSms(
       phone,

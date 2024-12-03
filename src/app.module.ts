@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -18,4 +18,14 @@ import { SmsModule } from './sms/sms.module';
     JwtModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  private readonly logger = new Logger(AppModule.name);
+
+  constructor() {
+    Logger.overrideLogger(['log', 'error', 'warn', 'debug', 'verbose']);
+
+    this.logger.log('NestJS app started');
+    this.logger.error('This is an error message');
+    this.logger.warn('This is a warning message');
+  }
+}

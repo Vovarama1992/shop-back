@@ -3,14 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class RequestAdminCodeDto {
   @ApiProperty({
-    description: 'Phone number of the admin user.',
-    example: '+1234567890',
-  })
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
-
-  @ApiProperty({
     description: 'Email of the admin user.',
     example: 'admin@example.com',
   })
