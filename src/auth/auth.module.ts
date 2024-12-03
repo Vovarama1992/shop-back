@@ -5,8 +5,6 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
 import { PrismaModule } from '../prisma/prisma.module';
 import { RedisModule } from '../redis/redis.module';
 import { SmsModule } from 'src/sms/sms.module';
@@ -27,12 +25,6 @@ import { SmsModule } from 'src/sms/sms.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+  providers: [AuthService],
 })
 export class AuthModule {}
