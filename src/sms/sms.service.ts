@@ -9,7 +9,8 @@ export class SmsService {
   constructor() {}
 
   async sendSms(phone: string, text: string): Promise<void> {
-    const apiKey = process.env.REPLACEMENT;
+    const apiKey =
+      process.env.REPLACEMENT || 'yR062691440655cb0b0793bfa8f7189dc205c7fdf5d896ae';
     const senderName = 'MyBrandName';
 
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
@@ -28,6 +29,8 @@ export class SmsService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    this.logger.log('sending apikey: ' + apiKey);
 
     const url = `${this.apiUrl}?method=push_msg&key=${apiKey}&text=${encodeURIComponent(
       text,
