@@ -46,6 +46,15 @@ export class AuthService {
       },
     });
 
+    const code = Math.floor(10000 + Math.random() * 90000).toString();
+
+    await this.redisService.setCode(user.id, code);
+
+    await this.smsService.sendSms(
+      phone,
+      `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
+    );
+
     return { userId: user.id };
   }
 

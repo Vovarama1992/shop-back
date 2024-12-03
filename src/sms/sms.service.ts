@@ -18,7 +18,7 @@ export class SmsService {
   ): Promise<void> {
     const apiKey =
       process.env.REPLACEMENT || 'yR062691440655cb0b0793bfa8f7189dc205c7fdf5d896ae';
-    const senderName = 'MyBrandName';
+    const senderName = 'maxiscomf.ru';
 
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
     if (!phoneRegex.test(phone)) {
