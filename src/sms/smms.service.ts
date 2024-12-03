@@ -13,7 +13,7 @@ export class SmsService {
     const login = 'intorder@maxiscomfort.ru';
     const password = 'y0N65vt)L5BH';
 
-    const senderName = 'MyBrandName';
+    const senderName = 'maxiscomf.ru';
 
     const params = {
       method: 'push_msg',
