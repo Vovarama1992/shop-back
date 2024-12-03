@@ -57,7 +57,7 @@ export class AuthController {
   }
 
   @Post('request-code')
-  @ApiOperation({ summary: 'Request a verification code for registration' })
+  @ApiOperation({ summary: 'Request a verification code for authorization' })
   @ApiBody({
     description: 'User data to request verification code',
     type: RequestCodeDto,
@@ -83,7 +83,6 @@ export class AuthController {
     examples: {
       'application/json': {
         value: {
-          phone: '+1234567890',
           email: 'admin@example.com',
           password: 'adminpassword',
         },
