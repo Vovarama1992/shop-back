@@ -4,10 +4,12 @@ import * as querystring from 'querystring';
 
 @Injectable()
 export class SmsService {
-  private apiUrl = 'https://ssl.bs00.ru/';
   private readonly logger = new Logger(SmsService.name);
 
   constructor() {}
+  formatPhoneNumber(phone: string): string {
+    return phone.replace(/\D/g, '');
+  }
 
   async sendSms(phone: string, text: string): Promise<void> {
     const login = 'intorder@maxiscomfort.ru';
@@ -15,12 +17,14 @@ export class SmsService {
 
     const senderName = 'maxiscomf.ru';
 
+    const formattedPhone = this.formatPhoneNumber(phone);
+
     const params = {
       method: 'push_msg',
       email: login,
       password: password,
       text: text,
-      phone: phone,
+      phone: formattedPhone,
       sender_name: senderName,
       format: 'json',
     };
