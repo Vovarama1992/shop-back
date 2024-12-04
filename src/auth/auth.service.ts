@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
@@ -13,6 +13,8 @@ import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(SmsService.name);
+
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
@@ -50,10 +52,20 @@ export class AuthService {
 
     await this.redisService.setCode(user.id, code);
 
-    await this.smsService.sendSms(
-      phone,
-      `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
-    );
+    this.logger.log(`Sending SMS to ${phone}`);
+    try {
+      await this.smsService.sendSms(
+        phone,
+        `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
+      );
+      this.logger.log(`SMS sent successfully to ${phone}`);
+    } catch (error) {
+      this.logger.error(`Failed to send SMS to ${phone}: ${error.message}`);
+      throw new HttpException(
+        'Error sending SMS',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return { userId: user.id };
   }
