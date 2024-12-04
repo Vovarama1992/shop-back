@@ -34,13 +34,10 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./src:/app/src
+      - ./src:/app/src 
+      - /app/node_modules 
     command: >
-      sh -c "
-      npx prisma migrate deploy &&
-      npx prisma generate &&
-      npm run start:prod
-      "
+      sh -c "npx prisma migrate deploy && npx prisma generate && npm run start:dev"
 
 volumes:
   postgres_data:

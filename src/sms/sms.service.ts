@@ -9,6 +9,10 @@ export class SmsService {
 
   constructor() {}
 
+  private cleanPhoneNumber(phone: string): string {
+    return phone.replace(/[^\d]/g, '');
+  }
+
   async sendSms(
     phone: string,
     text: string,
@@ -20,11 +24,13 @@ export class SmsService {
       process.env.REPLACEMENT || 'yR062691440655cb0b0793bfa8f7189dc205c7fdf5d896ae';
     const senderName = 'maxicomf.ru';
 
+    const cleanedPhone = this.cleanPhoneNumber(phone);
+
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-    if (!phoneRegex.test(phone)) {
-      this.logger.error(`Invalid phone number format: ${phone}`);
+    if (!phoneRegex.test(cleanedPhone)) {
+      this.logger.error(`Invalid phone number format: ${cleanedPhone}`);
       throw new HttpException(
-        `Invalid phone number format: ${phone}`,
+        `Invalid phone number format: ${cleanedPhone}`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -37,16 +43,16 @@ export class SmsService {
       );
     }
 
-    this.logger.log(`Sending SMS to ${phone} with text: "${text}"`);
+    this.logger.log(`Sending SMS to ${cleanedPhone} with text: "${text}"`);
 
     const params = {
       method: 'push_msg',
       key: apiKey,
       text: text,
-      phone: phone,
+      phone: cleanedPhone,
       sender_name: senderName,
       priority: priority,
-      format: 'json', // Запрос в формате JSON
+      format: 'json',
       set_aside_time: setAsideTime ? setAsideTime : undefined,
       time: timeZone === 'local' ? 'local' : undefined,
     };
@@ -66,7 +72,7 @@ export class SmsService {
         );
 
         if (err_code === '101') {
-          this.logger.error(`Incorrect phone number: ${phone}`);
+          this.logger.error(`Incorrect phone number: ${cleanedPhone}`);
         }
 
         throw new HttpException(

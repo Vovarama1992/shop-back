@@ -20,7 +20,7 @@ export class UsersController {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       throw new HttpException(
-        'Authorization header missing',
+        'Authorization header for route getMe missing',
         HttpStatus.UNAUTHORIZED,
       );
     }

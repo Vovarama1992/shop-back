@@ -22,12 +22,18 @@ export class AuthService {
     private smsService: SmsService,
   ) {}
 
+  private cleanPhoneNumber(phone: string): string {
+    return phone.replace(/[^\d]/g, '');
+  }
+
   async register(registerDto: RegisterDto) {
     const { email, phone, name, middleName, surName, isSubscribed } =
       registerDto;
 
+    const cleanPhone = this.cleanPhoneNumber(phone);
+
     const existingUser = await this.prisma.user.findFirst({
-      where: { OR: [{ email }, { phone }] },
+      where: { OR: [{ email }, { phone: cleanPhone }] },
     });
     if (existingUser) {
       throw new HttpException(
@@ -72,9 +78,9 @@ export class AuthService {
 
   async confirmRegistration(confirmCodeDto: ConfirmCodeDto) {
     const { phone, code } = confirmCodeDto;
-
+    const cleanPhone = this.cleanPhoneNumber(phone);
     const user = await this.prisma.user.findUnique({
-      where: { phone },
+      where: { phone: cleanPhone },
     });
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
@@ -99,9 +105,9 @@ export class AuthService {
 
   async requestCode(requestCodeDto: RequestCodeDto) {
     const { phone } = requestCodeDto;
-
+    const cleanPhone = this.cleanPhoneNumber(phone);
     const user = await this.prisma.user.findUnique({
-      where: { phone },
+      where: { phone: cleanPhone },
     });
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
