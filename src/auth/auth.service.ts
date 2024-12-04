@@ -35,11 +35,19 @@ export class AuthService {
     const existingUser = await this.prisma.user.findFirst({
       where: { OR: [{ email }, { phone: cleanPhone }] },
     });
-    if (existingUser) {
+    if (existingUser && existingUser.isApproved) {
       throw new HttpException(
         'Email or phone number already in use',
         HttpStatus.BAD_REQUEST,
       );
+    }
+
+    if (existingUser && !existingUser.isApproved) {
+      await this.prisma.user.delete({
+        where: {
+          id: existingUser.id,
+        },
+      });
     }
 
     const user = await this.prisma.user.create({
