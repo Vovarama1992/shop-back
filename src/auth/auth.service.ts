@@ -94,6 +94,9 @@ export class AuthService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
+    if (!user.isApproved) {
+      throw new HttpException('User not approved', HttpStatus.FORBIDDEN);
+    }
 
     const code = Math.floor(10000 + Math.random() * 90000).toString();
 
