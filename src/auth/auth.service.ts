@@ -126,6 +126,8 @@ export class AuthService {
 
     const code = Math.floor(10000 + Math.random() * 90000).toString();
 
+    await this.redisService.deleteCode(user.id);
+
     await this.redisService.setCode(user.id, code);
 
     await this.smsService.sendSms(
