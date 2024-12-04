@@ -53,7 +53,7 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: {
         email,
-        phone,
+        phone: cleanPhone,
         name,
         middleName,
         surName,
