@@ -24,6 +24,14 @@ export class RegisterDto {
   isAdmin: boolean;
 
   @ApiProperty({
+    description: 'password',
+    example: 'Pass123$',
+  })
+  @IsOptional()
+  @IsString()
+  password: string;
+
+  @ApiProperty({
     description: 'User’s first name.',
     example: 'John',
   })
