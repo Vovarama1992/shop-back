@@ -27,8 +27,16 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
-    const { email, phone, name, middleName, surName, isSubscribed, isAdmin } =
-      registerDto;
+    const {
+      email,
+      phone,
+      name,
+      middleName,
+      surName,
+      isSubscribed,
+      isAdmin,
+      password,
+    } = registerDto;
 
     const role = isAdmin ? Role.ADMIN : Role.USER;
 
@@ -61,6 +69,7 @@ export class AuthService {
         surName,
         isSubscribed,
         isApproved: false,
+        password: password || '',
         role,
       },
     });
