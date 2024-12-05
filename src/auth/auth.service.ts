@@ -164,13 +164,22 @@ export class AuthService {
     await this.redisService.setCode(user.id, code);
 
     const phone = user.phone;
+    this.logger.log(`Sending SMS to ${phone}`);
+    try {
+      await this.smsService.sendSms(
+        phone,
+        `УО Админ. Ваш код подтверждения  ${code}. Никому его не сообщайте!`,
+      );
+      this.logger.log(`SMS sent successfully to ${phone}`);
+    } catch (error) {
+      this.logger.error(`Failed to send SMS to ${phone}: ${error.message}`);
+      throw new HttpException(
+        'Error sending SMS',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
-    await this.smsService.sendSms(
-      phone,
-      `УО Админ. Ваш код подтверждения  ${code}. Никому его не сообщайте!`,
-    );
-
-    return { message: 'Code sent successfully' };
+    return { message: 'Code sent successfully', phone };
   }
 
   async login(loginDto: LoginDto) {
@@ -201,6 +210,6 @@ export class AuthService {
 
     await this.redisService.deleteCode(userId);
 
-    return { access_token: token };
+    return { access_token: token, user };
   }
 }
