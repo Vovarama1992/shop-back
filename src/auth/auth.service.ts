@@ -178,10 +178,11 @@ export class AuthService {
     await this.redisService.setCode(user.id, code);
 
     const phone = user.phone;
+    const cleanPhone = this.cleanPhoneNumber(phone);
     this.logger.log(`Sending SMS to ${phone}`);
     try {
       await this.smsService.sendSms(
-        phone,
+        cleanPhone,
         `УО Админ. Ваш код подтверждения  ${code}. Никому его не сообщайте!`,
       );
       this.logger.log(`SMS sent successfully to ${phone}`);
