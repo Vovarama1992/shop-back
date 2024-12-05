@@ -36,7 +36,34 @@ export class AuthController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+    return this.authService.register({ ...registerDto, isAdmin: false });
+  }
+
+  @Post('admin-register')
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiBody({
+    description: 'User registration data',
+    type: RegisterDto,
+    examples: {
+      'application/json': {
+        value: {
+          email: 'user@example.com',
+          name: 'John',
+          middleName: 'Michael',
+          surName: 'Doe',
+          phone: '+1234567890',
+          isSubscribed: true,
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully registered.',
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  async adminRegister(@Body() registerDto: RegisterDto) {
+    return this.authService.register({ ...registerDto, isAdmin: true });
   }
 
   @Post('confirm-registration')
