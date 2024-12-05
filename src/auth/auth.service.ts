@@ -39,7 +39,7 @@ export class AuthService {
     } = registerDto;
 
     const role = isAdmin ? Role.ADMIN : Role.USER;
-
+    this.logger.log('role while creating: ' + role);
     const cleanPhone = this.cleanPhoneNumber(phone);
 
     const existingUser = await this.prisma.user.findFirst({
@@ -163,8 +163,10 @@ export class AuthService {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
 
-    if (user.role !== Role.ADMIN) {
+    {
+      /*if (user.role !== Role.ADMIN) {
       throw new HttpException('User is not an admin', HttpStatus.FORBIDDEN);
+    }*/
     }
 
     if (password !== user.password) {
