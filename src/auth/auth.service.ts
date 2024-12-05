@@ -203,6 +203,7 @@ export class AuthService {
     const { code } = loginDto;
 
     const stored = await this.redisService.getCodeByCode(code);
+    this.logger.log('stored: ' + stored);
     if (!stored) {
       throw new HttpException(
         'Invalid or expired code',
@@ -215,6 +216,7 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { id: Number(userId) },
     });
+    this.logger.log('finded user: ' + user);
     if (!user || !user.isApproved) {
       throw new HttpException(
         'User not found or not confirmed',
