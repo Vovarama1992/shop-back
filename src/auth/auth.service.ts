@@ -185,7 +185,7 @@ export class AuthService {
     try {
       await this.smsService.sendSms(
         cleanPhone,
-        `УО Админ. Ваш код подтверждения  ${code}. Никому его не сообщайте!`,
+        `УО Админ. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
       );
       this.logger.log(`SMS sent successfully to ${phone}`);
     } catch (error) {
