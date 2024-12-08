@@ -1,25 +1,26 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'src/shared-modules/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { ConfirmCodeDto } from './dto/confirm-code.dto';
 import { RequestCodeDto } from './dto/request-code.dto';
 import { RequestAdminCodeDto } from './dto/request-admin-code.dto';
 import { LoginDto } from './dto/auth.dto';
-import { RedisService } from '../redis/redis.service'; // импортируем RedisService
-import { SmsService } from '../sms/sms.service';
+import { RedisService } from 'src/shared-modules/redis/redis.service';
+
 import { Role } from '@prisma/client';
+import { KafkaProducer } from '../kafka/kafka.producer';
 //import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(SmsService.name);
+  private readonly logger = new Logger(AuthService.name);
 
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
     private redisService: RedisService,
-    private smsService: SmsService,
+    private kafkaProducer: KafkaProducer,
   ) {}
 
   private cleanPhoneNumber(phone: string): string {
@@ -80,10 +81,7 @@ export class AuthService {
 
     this.logger.log(`Sending SMS to ${phone}`);
     try {
-      await this.smsService.sendSms(
-        phone,
-        `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
-      );
+      await this.kafkaProducer.sendCode(cleanPhone, code, false);
       this.logger.log(`SMS sent successfully to ${phone}`);
     } catch (error) {
       this.logger.error(`Failed to send SMS to ${phone}: ${error.message}`);
@@ -142,10 +140,7 @@ export class AuthService {
 
     await this.redisService.setCode(user.id, code);
 
-    await this.smsService.sendSms(
-      phone,
-      `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
-    );
+    await this.kafkaProducer.sendCode(cleanPhone, code, false);
 
     return { message: 'Code sent successfully' };
   }
@@ -163,12 +158,6 @@ export class AuthService {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
 
-    {
-      /*if (user.role !== Role.ADMIN) {
-      throw new HttpException('User is not an admin', HttpStatus.FORBIDDEN);
-    }*/
-    }
-
     if (password !== user.password) {
       throw new HttpException('Invalid password', HttpStatus.FORBIDDEN);
     }
@@ -183,10 +172,7 @@ export class AuthService {
     const cleanPhone = this.cleanPhoneNumber(phone);
     this.logger.log(`Sending SMS to ${phone}`);
     try {
-      await this.smsService.sendSms(
-        cleanPhone,
-        `УО Админ. Ваш код подтверждения ${code}. Никому его не сообщайте!`,
-      );
+      await this.kafkaProducer.sendCode(cleanPhone, code, true);
       this.logger.log(`SMS sent successfully to ${phone}`);
     } catch (error) {
       this.logger.error(`Failed to send SMS to ${phone}: ${error.message}`);

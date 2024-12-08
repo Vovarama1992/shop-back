@@ -20,7 +20,6 @@ export class JwtAuthGuard implements CanActivate {
     const request: Request = context.switchToHttp().getRequest();
     const authHeader = request.headers.authorization;
 
-    // Пропускаем маршрут, если он помечен как публичный
     const isPublic = this.reflector.get<boolean>(
       'isPublic',
       context.getHandler(),
@@ -29,7 +28,6 @@ export class JwtAuthGuard implements CanActivate {
       return true;
     }
 
-    // Проверяем, есть ли токен
     if (!authHeader) {
       throw new HttpException(
         'Authorization header missing',

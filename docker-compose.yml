@@ -13,29 +13,57 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  redis:
+  redis-service:
     image: redis:latest
     container_name: redis_service
     ports:
-      - '6379:6379' 
-    volumes:
-      - redis_data:/data
+      - '6379:6379'
 
-  nestjs:
+  sms-service:
     build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nestjs_service
-    working_dir: /app
+      context: ./sms-service
+    container_name: sms_service
+    ports:
+      - '3002:3002'
+    environment:
+      KAFKA_BROKER: kafka:9093
+    depends_on:
+      - kafka
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    ports:
+      - '9093:9093'
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user_service
     environment:
       DATABASE_URL: "postgresql://my_user:my_password@postgres:5432/my_database?schema=public"
+      KAFKA_BROKER: kafka:9093
     ports:
       - '3001:3001'
     depends_on:
       - postgres
+      - redis-service
+      - kafka
     volumes:
-      - ./src:/app/src 
-      - /app/node_modules 
+      - ./nestjs-service:/app
+      - /app/node_modules
     command: >
       sh -c "npx prisma migrate deploy && npx prisma generate && npm run start:dev"
 

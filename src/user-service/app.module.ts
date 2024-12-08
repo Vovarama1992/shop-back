@@ -1,22 +1,22 @@
 import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './src/auth/auth.module';
+import { UsersModule } from './src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { RedisModule } from './redis/redis.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { SmsModule } from './sms/sms.module';
+import { RedisModule } from 'src/shared-modules/redis/redis.module';
+import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
+import { KafkaProducer } from './src/kafka/kafka.producer';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
-    SmsModule,
     RedisModule,
     UsersModule,
     PrismaModule,
     JwtModule,
   ],
+  providers: [KafkaProducer],
 })
 export class AppModule {
   private readonly logger = new Logger(AppModule.name);
