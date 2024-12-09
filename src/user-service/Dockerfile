@@ -9,7 +9,7 @@ RUN npm install --unsafe-perm --allow-root
 # Удаляем лишние модули и генерируем Prisma клиент
 RUN rm -rf node_modules/.prisma node_modules/@prisma node_modules/prisma dist
 RUN npm install prisma --save-dev
-RUN npx prisma generate
+RUN npx prisma generate --schema=/app/prisma/schema.prisma
 
 # Собираем приложение
 RUN npm run build
