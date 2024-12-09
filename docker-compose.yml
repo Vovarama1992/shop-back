@@ -20,15 +20,16 @@ services:
       - '6379:6379'
 
   sms-service:
-    build:
-      context: ./src/sms-service
-    container_name: sms_service
-    ports:
-      - '3002:3002'
-    environment:
-      KAFKA_BROKER: kafka:9093
-    depends_on:
-      - kafka
+  build:
+    context: .
+    dockerfile: ./src/sms-service/Dockerfile
+  container_name: sms_service
+  ports:
+    - '3002:3002'
+  environment:
+    KAFKA_BROKER: kafka:9093
+  depends_on:
+    - kafka
 
   kafka:
     image: wurstmeister/kafka:latest
@@ -49,14 +50,12 @@ services:
       - '2181:2181'
 
   user-service:
-    build:
-      context: ./src/user-service
-    container_name: user_service
-    environment:
-      DATABASE_URL: "postgresql://my_user:my_password@postgres:5432/my_database?schema=public"
-      KAFKA_BROKER: kafka:9093
-    ports:
-      - '3001:3001'
+  build:
+    context: .
+    dockerfile: ./src/user-service/Dockerfile
+  container_name: user_service
+  ports:
+    - '3001:3001'
     depends_on:
       - postgres
       - redis-service

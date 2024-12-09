@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 
-COPY package.json package-lock.json ./
+COPY ./src/user-service/package.json ./src/user-service/package-lock.json ./
 RUN npm install --unsafe-perm --allow-root
 
 
