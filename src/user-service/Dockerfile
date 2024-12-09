@@ -1,28 +1,20 @@
-
 FROM node:18-alpine
-
 
 WORKDIR /app
 
-
-COPY ./src/user-service/package.json ./src/user-service/package-lock.json ./
+# Копируем только package.json и устанавливаем зависимости
+COPY ./ /app/
 RUN npm install --unsafe-perm --allow-root
 
-
-COPY . .
-
+# Удаляем лишние модули и генерируем Prisma клиент
 RUN rm -rf node_modules/.prisma node_modules/@prisma node_modules/prisma dist
-
 RUN npm install prisma --save-dev
-
-
 RUN npx prisma generate
 
-
+# Собираем приложение
 RUN npm run build
 
-
+# Запускаем приложение
 CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:dev"]
-
 
 EXPOSE 3001
