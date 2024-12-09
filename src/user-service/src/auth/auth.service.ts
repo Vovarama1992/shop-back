@@ -1,15 +1,15 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { PrismaService } from 'src/shared-modules/prisma/prisma.service';
+import { PrismaService } from '../../../shared-modules/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { ConfirmCodeDto } from './dto/confirm-code.dto';
 import { RequestCodeDto } from './dto/request-code.dto';
 import { RequestAdminCodeDto } from './dto/request-admin-code.dto';
 import { LoginDto } from './dto/auth.dto';
-import { RedisService } from 'src/shared-modules/redis/redis.service';
+import { RedisService } from '../../../shared-modules/redis/redis.service';
 
 import { Role } from '@prisma/client';
-import { KafkaProducerService } from 'src/shared-modules/kafka/kafka.producer';
+import { KafkaProducerService } from '../../../shared-modules/kafka/kafka.producer';
 
 @Injectable()
 export class AuthService {
