@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Копируем только package.json и устанавливаем зависимости
 COPY ./ /app/
+COPY ./prisma /app/prisma
 RUN npm install --unsafe-perm --allow-root
 
 # Удаляем лишние модули и генерируем Prisma клиент
