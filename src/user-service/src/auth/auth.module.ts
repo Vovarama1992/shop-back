@@ -7,12 +7,14 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
 
 @Module({
   imports: [
     UsersModule,
     PrismaModule,
     RedisModule,
+    KafkaModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

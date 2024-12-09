@@ -5,7 +5,7 @@ import { UsersModule } from './src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RedisModule } from 'src/shared-modules/redis/redis.module';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
-import { KafkaProducer } from './src/kafka/kafka.producer';
+import { KafkaProducerService } from '../shared-modules/kafka/kafka.producer';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { KafkaProducer } from './src/kafka/kafka.producer';
     PrismaModule,
     JwtModule,
   ],
-  providers: [KafkaProducer],
+  providers: [KafkaProducerService],
 })
 export class AppModule {
   private readonly logger = new Logger(AppModule.name);
