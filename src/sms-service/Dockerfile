@@ -7,7 +7,6 @@ RUN npm install --unsafe-perm --allow-root
 
 COPY . .
 
-COPY ../../packages ./packages
 
 RUN npm run build
 
