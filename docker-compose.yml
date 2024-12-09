@@ -21,8 +21,7 @@ services:
 
   sms-service:
     build:
-      context: .
-      dockerfile: ./src/sms-service/Dockerfile
+      context: ./src/sms-service
     container_name: sms_service
     ports:
       - '3002:3002'
@@ -51,8 +50,7 @@ services:
 
   user-service:
     build:
-      context: .
-      dockerfile: ./src/user-service/Dockerfile
+      context: ./src/user-service
     container_name: user_service
     environment:
       DATABASE_URL: "postgresql://my_user:my_password@postgres:5432/my_database?schema=public"
