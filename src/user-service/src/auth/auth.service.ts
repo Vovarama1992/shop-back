@@ -9,8 +9,7 @@ import { LoginDto } from './dto/auth.dto';
 import { RedisService } from 'src/shared-modules/redis/redis.service';
 
 import { Role } from '@prisma/client';
-import { KafkaProducer } from '../kafka/kafka.producer';
-//import * as bcrypt from 'bcryptjs';
+import { KafkaProducerService } from 'src/shared-modules/kafka/kafka.producer';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +19,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private redisService: RedisService,
-    private kafkaProducer: KafkaProducer,
+    private kafkaProducer: KafkaProducerService,
   ) {}
 
   private cleanPhoneNumber(phone: string): string {
