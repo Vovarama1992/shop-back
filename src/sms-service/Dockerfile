@@ -2,14 +2,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY ./src/sms-service/package.json ./src/sms-service/package-lock.json ./
+# Копируем весь проект в контейнер
+COPY ./ /app/
+
+# Устанавливаем зависимости
 RUN npm install --unsafe-perm --allow-root
 
-COPY . .
-
-
+# Собираем приложение
 RUN npm run build
 
+# Запускаем сервис
 CMD ["npm", "run", "start:dev"]
 
 EXPOSE 3002
