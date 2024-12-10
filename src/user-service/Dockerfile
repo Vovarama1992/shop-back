@@ -2,20 +2,23 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Копируем только package.json и устанавливаем зависимости
+# Копируем весь проект в контейнер
 COPY ./ /app/
-COPY ./prisma /app/prisma
+
+# Устанавливаем зависимости
 RUN npm install --unsafe-perm --allow-root
 
-# Удаляем лишние модули и генерируем Prisma клиент
-RUN rm -rf node_modules/.prisma node_modules/@prisma node_modules/prisma dist
+# Устанавливаем OpenSSL
+RUN apk add --no-cache openssl
+
+# Генерируем Prisma клиент
 RUN npm install prisma --save-dev
-RUN npx prisma generate --schema=/app/prisma/schema.prisma
+RUN npx prisma generate 
 
 # Собираем приложение
 RUN npm run build
 
 # Запускаем приложение
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:dev"]
+CMD ["npm", "run", "start:dev"]
 
 EXPOSE 3001
