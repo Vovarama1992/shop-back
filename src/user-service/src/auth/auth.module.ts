@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
 import { RedisModule } from 'src/shared-modules/redis/redis.module';
 import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
+import { KafkaConsumerController } from 'src/shared-modules/kafka/kafka.consumer';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, KafkaConsumerController],
   providers: [AuthService],
 })
 export class AuthModule {}
