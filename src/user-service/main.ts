@@ -2,13 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import { KafkaProducerService } from 'src/shared-modules/kafka/kafka.producer';
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const producerService = app.get(KafkaProducerService);
-  await producerService.sendCode('1234567890', '1234', false);
 
   app.enableCors({
     origin: ['http://localhost:3000', 'https://test.maxiscomfort.ru'],

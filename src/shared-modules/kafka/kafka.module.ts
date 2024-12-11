@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KafkaProducerService } from './kafka.producer';
 import { KafkaConsumerController } from './kafka.consumer';
+import { SmsModule } from 'src/sms-service/sms/sms.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { KafkaConsumerController } from './kafka.consumer';
         },
       },
     ]),
+    SmsModule,
   ],
   controllers: [KafkaConsumerController],
   providers: [KafkaProducerService],

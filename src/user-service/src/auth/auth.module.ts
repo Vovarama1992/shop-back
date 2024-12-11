@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisModule } from 'src/shared-modules/redis/redis.module';
 import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
 
 @Module({

@@ -12,6 +12,6 @@ RUN npm install --unsafe-perm --allow-root
 RUN npm run build
 
 # Запускаем сервис
-CMD ["npm", "run", "start:dev"]
+CMD ["node", "dist/sms-service/main.js"]
 
 EXPOSE 3002

@@ -19,6 +19,6 @@ RUN npx prisma generate
 RUN npm run build
 
 # Запускаем приложение
-CMD ["npm", "run", "start:dev"]
+CMD ["node", "dist/user-service/main.js"]
 
 EXPOSE 3001

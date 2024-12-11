@@ -8,8 +8,7 @@ async function bootstrap() {
   const logger = new Logger('SMS-Service');
   logger.log('SMS Service is starting...');
 
-  
-  await app.init();
+  await app.listen(3002);
 
   logger.log('SMS Service started and listening for Kafka messages');
 }
