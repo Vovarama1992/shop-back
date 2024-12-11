@@ -14,6 +14,9 @@ import { SmsModule } from 'src/sms-service/sms/sms.module';
           client: {
             brokers: ['kafka:9093'],
           },
+          consumer: {
+            groupId: 'sms-service-group',
+          },
         },
       },
     ]),
