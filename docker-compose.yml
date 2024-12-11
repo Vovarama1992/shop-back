@@ -1,3 +1,7 @@
+networks:
+  my_network:
+    driver: bridge
+
 services:
   postgres:
     image: postgres:13
@@ -10,12 +14,16 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
 
   redis-service:
     image: redis:latest
-    container_name: redis_service
+    container_name: redis
     ports:
       - '6379:6379'
+    networks:
+      - my_network
 
   sms-service:
     build:
@@ -28,6 +36,8 @@ services:
       KAFKA_BROKER: kafka:9093
     depends_on:
       - kafka
+    networks:
+      - my_network
 
   kafka:
     image: wurstmeister/kafka:latest
@@ -35,19 +45,23 @@ services:
     ports:
       - '9093:9093'
     environment:
-      - KAFKA_ADVERTISED_LISTENERS=INSIDE://kafka:9093
-      - KAFKA_LISTENERS=INSIDE://0.0.0.0:9093
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9093
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     depends_on:
       - zookeeper
+    networks:
+      - my_network
 
   zookeeper:
     image: wurstmeister/zookeeper:latest
     container_name: zookeeper
     ports:
       - '2181:2181'
+    networks:
+      - my_network
 
   user-service:
     build:
@@ -60,8 +74,8 @@ services:
       - postgres
       - redis-service
       - kafka
-    command: >
-      sh -c "npx prisma migrate deploy && npx prisma generate && npm run start:dev"
+    networks:
+      - my_network
 
 volumes:
   postgres_data:

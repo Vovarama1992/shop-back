@@ -1,18 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RedisService {
   private redisClient: Redis;
+  private readonly logger = new Logger(RedisService.name);
 
   constructor(private configService: ConfigService) {
-    this.redisClient = new Redis({
-      host: this.configService.get<string>('REDIS_HOST'),
-      port: this.configService.get<number>('REDIS_PORT'),
-      db: this.configService.get<number>('REDIS_DB'),
-      password: this.configService.get<string>('REDIS_PASSWORD'),
-    });
+    this.connectToRedis();
+  }
+
+  private async connectToRedis() {
+    const host = this.configService.get<string>('REDIS_HOST');
+    const port = this.configService.get<number>('REDIS_PORT');
+    const db = this.configService.get<number>('REDIS_DB');
+    const password = this.configService.get<string>('REDIS_PASSWORD');
+
+    try {
+      this.redisClient = new Redis({
+        host,
+        port,
+        db,
+        password,
+        retryStrategy: (times) => {
+          const delay = Math.min(times * 1000, 10000);
+          this.logger.warn(`Retrying Redis connection in ${delay / 1000}s...`);
+          return delay;
+        },
+      });
+
+      this.redisClient.on('connect', () => {
+        this.logger.log('Redis connected successfully.');
+      });
+
+      this.redisClient.on('error', (err) => {
+        this.logger.error(`Redis connection error: ${err.message}`);
+      });
+    } catch (error) {
+      this.logger.error('Failed to initialize Redis:', error.message);
+    }
   }
 
   async setCode(userId: number, code: string): Promise<void> {
