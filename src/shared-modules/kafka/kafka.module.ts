@@ -24,6 +24,6 @@ import { SmsModule } from 'src/sms-service/sms/sms.module';
   ],
   controllers: [KafkaConsumerController],
   providers: [KafkaProducerService],
-  exports: [KafkaProducerService, KafkaConsumerController],
+  exports: [KafkaProducerService],
 })
 export class KafkaModule {}
