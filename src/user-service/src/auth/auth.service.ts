@@ -187,7 +187,7 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const { code } = loginDto;
 
-    const stored = await this.redisService.getCodeByCode(code);
+    const stored = await this.redisService.getUserByCode(code);
     this.logger.log('stored: ' + stored);
     if (!stored) {
       throw new HttpException(

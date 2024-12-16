@@ -54,7 +54,7 @@ export class RedisService {
     await this.redisClient.del(userId.toString());
   }
 
-  async getCodeByCode(code: string): Promise<{ userId: number } | null> {
+  async getUserByCode(code: string): Promise<{ userId: number } | null> {
     const keys = await this.redisClient.keys('*');
     for (const key of keys) {
       const storedCode = await this.redisClient.get(key);

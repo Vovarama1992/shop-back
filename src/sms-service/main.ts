@@ -9,20 +9,18 @@ async function bootstrap() {
   const logger = new Logger('SMS-Service');
   logger.log('SMS Service is starting...');
 
-  // Подключение Kafka-микросервиса
   app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['kafka:9093'], // Укажите ваши брокеры
+        brokers: ['kafka:9093'],
       },
       consumer: {
-        groupId: 'sms-service-group', // Укажите ваш groupId
+        groupId: 'sms-service-group',
       },
     },
   });
 
-  // Запускаем оба сервиса
   await app.startAllMicroservices();
   await app.listen(3002);
 
