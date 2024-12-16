@@ -6,11 +6,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { RedisModule } from './redis/redis.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SmsModule } from './sms/sms.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
+    ProductModule,
     SmsModule,
     RedisModule,
     UsersModule,
