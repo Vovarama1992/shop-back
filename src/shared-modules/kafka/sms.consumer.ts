@@ -3,8 +3,8 @@ import { EventPattern, Payload } from '@nestjs/microservices';
 import { SmsService } from 'src/sms-service/sms/sms.service';
 
 @Controller()
-export class KafkaConsumerController {
-  private readonly logger = new Logger(KafkaConsumerController.name);
+export class SmsConsumerController {
+  private readonly logger = new Logger(SmsConsumerController.name);
 
   constructor(private readonly smsService: SmsService) {}
 

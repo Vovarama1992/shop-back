@@ -76,6 +76,23 @@ services:
       - kafka
     networks:
       - my_network
+    command: sh -c "npx prisma migrate deploy"
+
+  product-service:
+    build:
+      context: .
+      dockerfile: ./src/product-service/Dockerfile
+    container_name: product_service
+    ports:
+      - '3003:3003'
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - my_network
+    volumes:
+      - ./uploads/product-images:/app/uploads/product-images 
+    command: sh -c "npx prisma migrate deploy"
 
 volumes:
   postgres_data:

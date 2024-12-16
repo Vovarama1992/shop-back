@@ -51,7 +51,7 @@ export class KafkaProducerService implements OnModuleInit {
       : `Умная Одежда. Ваш код подтверждения ${code}. Никому его не сообщайте!`;
 
     try {
-      await this.kafkaClient.emit('request-code', {
+      this.kafkaClient.emit('request-code', {
         phone,
         messageText,
       });
