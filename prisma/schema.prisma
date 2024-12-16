@@ -28,8 +28,45 @@ model User {
   createdAt     DateTime @default(now())
 }
 
+model Product {
+  id             Int        @id @default(autoincrement())
+  category       Category 
+  name           String?
+  description    String?  
+  season         Season?     
+  brand          String?     
+  price          Float      
+  discount       Float?     
+  color          String?    
+  size           String?    
+  insulation     String? 
+  imageUrl       String?
+  length         String?    
+  storeIds       Int[]     
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+enum Category {
+  MEN
+  WOMEN
+  ACCESSORIES
+  NEW_ARRIVALS
+  SALE        
+  PLUS_SIZE    
+  MATERIALS     
+}
+
+enum Season {
+  SPRING_SUMMER
+  DEMI_SEASON
+  WINTER
+}
+
 enum Role {
   USER
   ADMIN
 }
+
+
 
