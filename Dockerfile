@@ -1,5 +1,5 @@
 
-FROM node:18-alpine
+FROM node:18-bullseye
 
 # Устанавливаем необходимые зависимости для OpenSSL 1.1 и Prisma
 RUN apk add --no-cache openssl libssl1.1 libstdc++ bash
