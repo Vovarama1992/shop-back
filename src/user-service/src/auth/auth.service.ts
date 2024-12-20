@@ -209,8 +209,10 @@ export class AuthService {
       );
     }
 
+    const expiresIn = user.role === Role.ADMIN ? '12h' : '48h';
+
     const payload = { sub: user.id, phone: user.phone };
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload, { expiresIn });
 
     await this.redisService.deleteCode(userId);
 
