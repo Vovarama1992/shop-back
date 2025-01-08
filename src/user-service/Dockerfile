@@ -17,10 +17,11 @@ COPY . .
 # Генерируем Prisma клиент заново
 RUN npx prisma generate
 
+
 # Собираем приложение
 RUN npm run build
 
-# Запускаем приложение
-CMD ["node", "dist/user-service/main.js"]
+# Запускаем миграции и сервис
+CMD ["sh", "-c", "echo 'Running migrations...' && npx prisma migrate deploy && echo 'Starting user-service...' && node dist/user-service/main.js || echo 'Failed to start user-service'"]
 
 EXPOSE 3001

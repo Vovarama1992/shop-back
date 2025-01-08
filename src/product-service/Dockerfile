@@ -8,6 +8,9 @@ COPY package*.json ./
 # Устанавливаем зависимости
 RUN npm install --unsafe-perm --allow-root
 
+# Устанавливаем дополнительные зависимости (например, class-transformer)
+RUN npm install class-transformer --save
+
 # Устанавливаем OpenSSL
 RUN apk add --no-cache openssl
 
@@ -20,7 +23,7 @@ RUN npx prisma generate
 # Собираем приложение
 RUN npm run build
 
-# Запускаем приложение
-CMD ["node", "dist/product-service/main.js"]
+# Запускаем сервис
+CMD ["sh", "-c", "echo 'Starting product-service...' && node dist/product-service/main.js || echo 'Failed to start product-service'"]
 
 EXPOSE 3003

@@ -38,6 +38,7 @@ services:
       - kafka
     networks:
       - my_network
+    
 
   kafka:
     image: wurstmeister/kafka:latest
@@ -76,7 +77,7 @@ services:
       - kafka
     networks:
       - my_network
-    command: sh -c "npx prisma migrate deploy"
+    
 
   product-service:
     build:
@@ -92,7 +93,7 @@ services:
       - my_network
     volumes:
       - ./uploads/product-images:/app/uploads/product-images 
-    command: sh -c "npx prisma migrate deploy"
+    
 
 volumes:
   postgres_data:
