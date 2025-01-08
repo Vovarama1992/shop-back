@@ -47,6 +47,38 @@ model Product {
   updatedAt      DateTime   @updatedAt
 }
 
+model Article {
+  id              Int        @id @default(autoincrement())
+  title           String
+  description     String
+  section         Section     @default(USER)
+  composition     Composition @default(LEFT)
+  metaTitle       String
+  metaDescription String
+  imageUrl        String?
+  isDeleted       Boolean   @default(false)
+  draft           Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  userId          Int
+  paragraphs      Paragraph[]  // Связь с абзацами
+}
+
+model Paragraph {
+  id           Int      @id @default(autoincrement())
+  articleId    Int
+  title        String
+  content      String
+  isDeleted    Boolean   @default(false)
+  imageUrl     String?
+  order        Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  article      Article  @relation(fields: [articleId], references: [id])
+}
+
+
+
 enum Category {
   MEN
   WOMEN
@@ -55,6 +87,17 @@ enum Category {
   SALE        
   PLUS_SIZE    
   MATERIALS     
+}
+
+enum Section {
+  NEWS
+  SEO
+  USER
+}
+
+enum Composition {
+  LEFT
+  RIGHT
 }
 
 enum Season {

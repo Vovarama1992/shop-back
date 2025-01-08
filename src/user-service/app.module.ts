@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { RedisModule } from 'src/shared-modules/redis/redis.module';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
 import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
+import { ImageModule } from './src/image/image.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
     KafkaModule,
     RedisModule,
     UsersModule,
+    ImageModule,
     PrismaModule,
     JwtModule,
   ],

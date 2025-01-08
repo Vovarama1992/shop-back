@@ -2,8 +2,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Копируем весь проект в контейнер
-COPY ./ /app/
+# Копируем package.json и package-lock.json для установки зависимостей
+COPY package*.json ./
 
 # Устанавливаем зависимости
 RUN npm install --unsafe-perm --allow-root
@@ -11,8 +11,10 @@ RUN npm install --unsafe-perm --allow-root
 # Устанавливаем OpenSSL
 RUN apk add --no-cache openssl
 
-# Генерируем Prisma клиент
-RUN npm install prisma --save-dev
+# Копируем остальные файлы проекта
+COPY . .
+
+# Генерируем Prisma клиент заново
 RUN npx prisma generate
 
 # Собираем приложение
