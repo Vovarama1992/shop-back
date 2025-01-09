@@ -25,6 +25,11 @@ export class ArticleController {
     return this.articleService.findDrafts();
   }
 
+  @Get('search/:keyword')
+  async searchByKeyword(@Param('keyword') keyword: string) {
+    return this.articleService.searchByKeyword(keyword);
+  }
+
   @Post()
   async create(@Body() createArticleDto: CreateArticleDto) {
     return this.articleService.create(createArticleDto);

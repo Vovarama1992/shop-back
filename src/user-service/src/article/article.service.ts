@@ -29,6 +29,22 @@ export class ArticleService {
     });
   }
 
+  async searchByKeyword(keyword: string) {
+    return this.prisma.article.findFirst({
+      where: {
+        OR: [
+          { title: { contains: keyword, mode: 'insensitive' } },
+          { metaTitle: { contains: keyword, mode: 'insensitive' } },
+          { metaDescription: { contains: keyword, mode: 'insensitive' } },
+          { description: { contains: keyword, mode: 'insensitive' } },
+        ],
+      },
+      include: {
+        paragraphs: true,
+      },
+    });
+  }
+
   async create(createArticleDto: CreateArticleDto) {
     const { paragraphs, ...articleData } = createArticleDto;
 
