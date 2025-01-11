@@ -53,7 +53,7 @@ export class ImageController {
           cb(null, dest);
         },
         filename: (req, file, cb) => {
-          const paragraphId = req.params.id;
+          const paragraphId = req.params.paragraphId;
           const filename = `${paragraphId}${path.extname(file.originalname)}`;
           cb(null, filename);
         },

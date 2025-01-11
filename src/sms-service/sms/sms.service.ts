@@ -20,7 +20,7 @@ export class SmsService {
     setAsideTime?: number,
     timeZone: string = 'local',
   ): Promise<void> {
-    const apiKey = process.env.REPLACEMENT;
+    const apiKey = process.env.SMS_KEY;
     const senderName = 'maxicomf.ru';
 
     const cleanedPhone = this.cleanPhoneNumber(phone);
