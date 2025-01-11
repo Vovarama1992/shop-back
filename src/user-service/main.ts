@@ -13,6 +13,7 @@ async function bootstrap() {
     logger.log('Starting application...');
     const app = await NestFactory.create(AppModule);
     logger.log('Nest application instance created.');
+    console.log('someLog');
 
     app.enableCors({
       origin: [
