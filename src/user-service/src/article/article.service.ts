@@ -29,10 +29,20 @@ export class ArticleService {
     });
   }
 
+  async findOne(id: number) {
+    return this.prisma.article.findUnique({
+      where: { id },
+      include: {
+        paragraphs: true,
+      },
+    });
+  }
+
   async searchByKeyword(keyword: string) {
     return this.prisma.article.findFirst({
       where: {
         OR: [
+          { keyword: { contains: keyword, mode: 'insensitive' } },
           { title: { contains: keyword, mode: 'insensitive' } },
           { metaTitle: { contains: keyword, mode: 'insensitive' } },
           { metaDescription: { contains: keyword, mode: 'insensitive' } },

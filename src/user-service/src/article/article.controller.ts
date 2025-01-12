@@ -25,6 +25,11 @@ export class ArticleController {
     return this.articleService.findDrafts();
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.articleService.findOne(Number(id));
+  }
+
   @Get('search/:keyword')
   async searchByKeyword(@Param('keyword') keyword: string) {
     return this.articleService.searchByKeyword(keyword);

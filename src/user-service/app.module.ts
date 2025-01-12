@@ -7,6 +7,7 @@ import { RedisModule } from 'src/shared-modules/redis/redis.module';
 import { PrismaModule } from 'src/shared-modules/prisma/prisma.module';
 import { KafkaModule } from 'src/shared-modules/kafka/kafka.module';
 import { ImageModule } from './src/image/image.module';
+import { ArticleModule } from './src/article/article.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ImageModule } from './src/image/image.module';
     RedisModule,
     UsersModule,
     ImageModule,
+    ArticleModule,
     PrismaModule,
     JwtModule,
   ],

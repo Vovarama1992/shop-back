@@ -7,7 +7,7 @@ import { existsSync, mkdirSync } from 'fs';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const logger = new Logger('Bootstrap'); // Логгер для старта приложения
+  const logger = new Logger('Bootstrap');
 
   try {
     logger.log('Starting application...');

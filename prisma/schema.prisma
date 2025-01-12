@@ -60,8 +60,9 @@ model Article {
   draft           Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  keyword         String?
   userId          Int
-  paragraphs      Paragraph[]  // Связь с абзацами
+  paragraphs      Paragraph[]  
 }
 
 model Paragraph {
