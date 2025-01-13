@@ -22,6 +22,7 @@ export class SmsService {
   ): Promise<void> {
     const apiKey = process.env.SMS_KEY;
     const senderName = 'maxicomf.ru';
+    this.logger.log('finded apiKey: ' + apiKey);
 
     const cleanedPhone = this.cleanPhoneNumber(phone);
 
