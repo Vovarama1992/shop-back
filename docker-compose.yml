@@ -36,6 +36,8 @@ services:
       KAFKA_BROKER: kafka:9093
     depends_on:
       - kafka
+    env_file:
+      - .env
     networks:
       - my_network
     
