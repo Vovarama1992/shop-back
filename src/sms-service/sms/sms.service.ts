@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import * as querystring from 'querystring';
 
@@ -6,8 +7,11 @@ import * as querystring from 'querystring';
 export class SmsService {
   private apiUrl = 'https://ssl.bs00.ru/';
   private readonly logger = new Logger(SmsService.name);
+  private readonly apiKey: string;
 
-  constructor() {}
+  constructor(private readonly configService: ConfigService) {
+    this.apiKey = this.configService.get<string>('SMS_KEY');
+  }
 
   private cleanPhoneNumber(phone: string): string {
     return phone.replace(/[^\d]/g, '');
@@ -20,9 +24,8 @@ export class SmsService {
     setAsideTime?: number,
     timeZone: string = 'local',
   ): Promise<void> {
-    const apiKey = process.env.SMS_KEY;
     const senderName = 'maxicomf.ru';
-    this.logger.log('finded apiKey: ' + apiKey);
+    this.logger.log('finded apiKey: ' + this.apiKey);
 
     const cleanedPhone = this.cleanPhoneNumber(phone);
 
@@ -47,7 +50,7 @@ export class SmsService {
 
     const params = {
       method: 'push_msg',
-      key: apiKey,
+      key: this.apiKey,
       text: text,
       phone: cleanedPhone,
       sender_name: senderName,
